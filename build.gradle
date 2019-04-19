@@ -1,0 +1,28 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'groovy'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'io.codelex'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.codehaus.groovy:groovy'
+    implementation 'org.springframework:spring-web:5.1.5.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.spockframework:spock-core:1.2-groovy-2.5'
+    implementation 'org.spockframework:spock-spring:1.2-groovy-2.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'commons-lang:commons-lang:2.6'
+}
+
+test.onlyIf { false }

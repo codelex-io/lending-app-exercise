@@ -1,0 +1,8 @@
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+  - script: |
+      docker build -t lending-app-tests:latest .
+      docker run --rm -u root lending-app-tests:latest build
+    displayName: 'Build'
