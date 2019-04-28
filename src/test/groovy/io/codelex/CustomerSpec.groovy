@@ -84,7 +84,7 @@ class CustomerSpec extends BaseSpecification {
             def req = authRequest()
             authenticationApi.register(req)
         when:
-            authenticationApi.register(req.tap { password = randomPassword() })
+            authenticationApi.signIn(req.tap { password = randomPassword() })
         then:
             def e = thrown InvalidStatusException
             e.httpStatus == BAD_REQUEST
