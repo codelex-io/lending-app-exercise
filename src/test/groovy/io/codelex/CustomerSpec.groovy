@@ -7,8 +7,7 @@ import spock.lang.Unroll
 import java.time.LocalDate
 
 import static io.codelex.CustomerFixture.*
-import static org.springframework.http.HttpStatus.BAD_REQUEST
-import static org.springframework.http.HttpStatus.FORBIDDEN
+import static org.springframework.http.HttpStatus.*
 
 class CustomerSpec extends BaseSpecification {
     @Autowired
@@ -87,7 +86,7 @@ class CustomerSpec extends BaseSpecification {
             authenticationApi.signIn(req.tap { password = randomPassword() })
         then:
             def e = thrown InvalidStatusException
-            e.httpStatus == BAD_REQUEST
+            e.httpStatus == CONFLICT
     }
 
     def 'should not be possible to access loans with no authentication'() {
@@ -170,6 +169,23 @@ class CustomerSpec extends BaseSpecification {
             def e = thrown InvalidStatusException
             def sessionId = e.sessionId
             e.httpStatus == BAD_REQUEST
+        when:
+            loanApi.fetchLoans(sessionId)
+        then:
+            e = thrown InvalidStatusException
+            e.httpStatus == FORBIDDEN
+    }
+
+    def 'should not authorise on failed sign-in'() {
+        given:
+            def req = authRequest()
+            authenticationApi.register(req)
+        when:
+            authenticationApi.signIn(req.tap { it.password = randomPassword() })
+        then:
+            def e = thrown InvalidStatusException
+            def sessionId = e.sessionId
+            e.httpStatus == CONFLICT
         when:
             loanApi.fetchLoans(sessionId)
         then:
