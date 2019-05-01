@@ -144,6 +144,7 @@ class CustomerSpec extends BaseSpecification {
             def e = thrown InvalidStatusException
             e.httpStatus == BAD_REQUEST
         where:
+            //one condition - at least 6 chars
             password << [null, '', ' ', '123']
     }
 
@@ -156,6 +157,7 @@ class CustomerSpec extends BaseSpecification {
             def e = thrown InvalidStatusException
             e.httpStatus == BAD_REQUEST
         where:
+            //one condition - at least 6 chars
             password << [null, '', ' ', '123']
     }
 
