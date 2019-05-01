@@ -159,4 +159,21 @@ class CustomerSpec extends BaseSpecification {
         where:
             password << [null, '', ' ', '123']
     }
+
+    def 'should not authorise on failed registration'() {
+        given:
+            def req = authRequest()
+            authenticationApi.register(req)
+        when:
+            authenticationApi.register(req)
+        then:
+            def e = thrown InvalidStatusException
+            def sessionId = e.sessionId
+            e.httpStatus == BAD_REQUEST
+        when:
+            loanApi.fetchLoans(sessionId)
+        then:
+            e = thrown InvalidStatusException
+            e.httpStatus == FORBIDDEN
+    }
 }

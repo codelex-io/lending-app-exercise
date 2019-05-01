@@ -19,7 +19,7 @@ class AuthenticationApi {
     String register(AuthRequest req) {
         def response = publicApiTemplate.exchange('/register', POST, new HttpEntity<>(req), Void)
         if (response.statusCode != OK) {
-            throw new InvalidStatusException(response.statusCode)
+            throw new InvalidStatusException(response.statusCode, extractSessionId(response))
         }
         return extractSessionId(response)
     }
@@ -27,7 +27,7 @@ class AuthenticationApi {
     String signIn(AuthRequest req) {
         def response = publicApiTemplate.exchange('/sign-in', POST, new HttpEntity<>(req), Void)
         if (response.statusCode != OK) {
-            throw new InvalidStatusException(response.statusCode)
+            throw new InvalidStatusException(response.statusCode, extractSessionId(response))
         }
         return extractSessionId(response)
     }
